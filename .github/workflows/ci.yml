@@ -1,0 +1,16 @@
+name: Build, test and JDBC demo
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+      - run: mvn --batch-mode verify
+      - run: java -cp "target/test-classes:target/classes" pl.hobiarydb.jdbc.JdbcDemo
